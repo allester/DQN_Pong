@@ -1,6 +1,7 @@
 import gym
 import preprocess_frame as ppf
 import numpy as np
+from agent_memory import Memory
 
 
 def initialize_new_game(name, env, agent):
@@ -26,6 +27,10 @@ def take_step(name, env, agent, score, debug):
     if agent.total_timesteps % 50000 == 0:
       agent.model.save_weights('recent_weights.hdf5')
       print('\nWeights saved!')
+      agent.learn(debug)
+      agent.memory = Memory(50000)
+      print("Memory Cleared!")
+      return (-21.0), True
 
     #3: Take action
     next_frame, next_frames_reward, next_frame_terminal, info = env.step(agent.memory.actions[-1])
@@ -52,8 +57,12 @@ def take_step(name, env, agent, score, debug):
         env.render()
 
     #9: If the threshold memory is satisfied, make the agent learn from memory
-    if len(agent.memory.frames) > agent.starting_mem_len:
+    """if len(agent.memory.frames) > agent.starting_mem_len:
         agent.learn(debug)
+        agent.memory = Memory(50000)
+        print("Memory Cleared!")
+        return (-21.0), True"""
+        
 
     return (score + next_frames_reward),False
 

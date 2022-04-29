@@ -13,7 +13,7 @@ class Agent():
         self.memory = Memory(max_mem_len)
         self.possible_actions = possible_actions
         self.epsilon = starting_epsilon
-        self.epsilon_decay = .9/100000
+        self.epsilon_decay = 0.00004 #.9/100000
         self.epsilon_min = .05
         self.gamma = .95
         self.learn_rate = learn_rate
